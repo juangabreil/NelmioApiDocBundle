@@ -36,7 +36,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         $this->mediaTypes = $mediaTypes;
     }
 
-    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod, \ReflectionClass  $reflectionClass)
     {
         $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
         $annotations = array_filter($annotations, static function ($value) {

@@ -120,7 +120,7 @@ final class FilteredRouteCollectionBuilder
             return true;
         }
 
-        $method = $this->controllerReflector->getReflectionMethod(
+        list($method, $class) = $this->controllerReflector->getReflectionMethod(
             $route->getDefault('_controller') ?? ''
         );
         if (null === $method) {

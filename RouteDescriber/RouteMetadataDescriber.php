@@ -23,7 +23,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod, \ReflectionClass  $reflectionClass)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
             $requirements = $route->getRequirements();

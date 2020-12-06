@@ -47,8 +47,8 @@ final class OpenApiPhpDescriber
         $classAnnotations = [];
 
         /** @var \ReflectionMethod $method */
-        foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods)) {
-            $declaringClass = $method->getDeclaringClass();
+        foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods, $class)) {
+            $declaringClass = $class;
 
             $path = Util::getPath($api, $path);
 
@@ -141,7 +141,7 @@ final class OpenApiPhpDescriber
                 continue;
             }
             $controller = $route->getDefault('_controller');
-            $reflectedMethod = $this->controllerReflector->getReflectionMethod($controller);
+            list($reflectedMethod, $reflectedClass) = $this->controllerReflector->getReflectionMethod($controller);
             if (null === $reflectedMethod) {
                 continue;
             }
@@ -154,7 +154,7 @@ final class OpenApiPhpDescriber
 
                 continue;
             }
-            yield $reflectedMethod => [$path, $supportedHttpMethods];
+            yield $reflectedMethod => [$path, $supportedHttpMethods, $reflectedClass];
         }
     }
 

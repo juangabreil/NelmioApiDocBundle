@@ -38,7 +38,7 @@ class ControllerReflector
     /**
      * Returns the ReflectionMethod for the given controller string.
      *
-     * @return \ReflectionMethod|null
+     * @return array[\ReflectionMethod, \ReflectionClass]|null
      */
     public function getReflectionMethod($controller)
     {
@@ -53,12 +53,12 @@ class ControllerReflector
     }
 
     /**
-     * @return \ReflectionMethod|null
+     * @return array[\ReflectionMethod, \ReflectionClass]|null
      */
     public function geReflectionMethodByClassNameAndMethodName(string $class, string $method)
     {
         try {
-            return new \ReflectionMethod($class, $method);
+            return [new \ReflectionMethod($class, $method), new \ReflectionClass($class)];
         } catch (\ReflectionException $e) {
             // In case we can't reflect the controller, we just
             // ignore the route
