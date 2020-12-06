@@ -42,6 +42,23 @@ final class OpenApiPhpDescriber
         $this->overwrite = $overwrite;
     }
 
+    private function getClassAnnotations(\ReflectionClass $class)
+    {
+        $annotations = [];
+        $curr = $class;
+        while ($curr !== false) {
+            $annotations = array_merge(
+                $annotations,
+                array_filter($this->annotationReader->getClassAnnotations($curr), function ($v) {
+                    return $v instanceof OA\AbstractAnnotation;
+                })
+            );
+            $curr = $curr->getParentClass();
+        }
+
+        return $annotations;
+    }
+
     public function describe(OA\OpenApi $api)
     {
         $classAnnotations = [];
@@ -59,9 +76,7 @@ final class OpenApiPhpDescriber
             Analyser::$context->filename = $method->getFileName();
 
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
-                $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
-                    return $v instanceof OA\AbstractAnnotation;
-                });
+                $classAnnotations = $this->getClassAnnotations($declaringClass);
                 $classAnnotations[$declaringClass->getName()] = $classAnnotations;
             }
 
